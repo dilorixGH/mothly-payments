@@ -47,10 +47,6 @@ function loadExpenses() {
 // ADD OR UPDATE EXPENSE
 // ---------------------------
 btnAdd.addEventListener('click', () => {
-    
-    if (window?.navigator?.hapticFeedback) {
-        navigator.hapticFeedback.impact('medium');
-    }
 
     const name = inputName.value.trim();
     const sum = Number(inputSum.value.trim());
@@ -142,3 +138,70 @@ function render() {
 
     totalValue.textContent = total + " €";
 }
+
+const calendarModal = document.getElementById("calendarModal");
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarMonth = document.getElementById("calendarMonth");
+const prevMonthBtn = document.getElementById("prevMonth");
+const nextMonthBtn = document.getElementById("nextMonth");
+
+let currentDate = new Date();
+
+function openCalendar() {
+    calendarModal.style.display = "flex";
+    renderCalendar();
+}
+
+function closeCalendar() {
+    calendarModal.style.display = "none";
+}
+
+function renderCalendar() {
+    calendarGrid.innerHTML = "";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    calendarMonth.textContent = currentDate.toLocaleString("ru", {
+        month: "long",
+        year: "numeric"
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+        const empty = document.createElement("div");
+        calendarGrid.appendChild(empty);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+        cell.textContent = day;
+
+        cell.onclick = () => {
+            const d = new Date(year, month, day);
+            inputDate.value = d.toISOString().split("T")[0];
+            closeCalendar();
+        };
+
+        calendarGrid.appendChild(cell);
+    }
+}
+
+prevMonthBtn.onclick = () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+};
+
+nextMonthBtn.onclick = () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+};
+
+calendarModal.onclick = (e) => {
+    if (e.target === calendarModal) closeCalendar();
+};
+
+inputDate.onclick = openCalendar;
