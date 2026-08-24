@@ -48,7 +48,9 @@ function loadExpenses() {
 // ---------------------------
 btnAdd.addEventListener('click', () => {
     
-    navigator.vibrate(10);
+    if (window?.navigator?.hapticFeedback) {
+        navigator.hapticFeedback.impact('medium');
+    }
 
     const name = inputName.value.trim();
     const sum = Number(inputSum.value.trim());
