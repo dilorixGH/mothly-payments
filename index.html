@@ -26,7 +26,7 @@
     background: var(--bg);
     color: var(--text);
     height: 100vh;
-    overflow: hidden; /* убираем прокрутку */
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,19 +34,19 @@
 
   .app {
     width: 100%;
-    max-width: 390px; /* iPhone 13 Pro */
+    max-width: 390px;
     height: 100%;
-    padding: 16px;
+    padding: 50px 16px 16px; /* заголовок ниже */
     display: flex;
     flex-direction: column;
     gap: 14px;
   }
 
   .title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
 
   .summary {
@@ -58,7 +58,7 @@
   .summary-row {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .list {
@@ -85,12 +85,12 @@
   .item-header {
     display: flex;
     justify-content: space-between;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
   }
 
   .item-meta {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     margin-top: 4px;
   }
@@ -102,21 +102,37 @@
   }
 
   .btn {
-    padding: 6px 10px;
-    border-radius: var(--radius);
+    padding: 10px 14px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.15s ease;
   }
 
   .btn-primary {
-    background: var(--accent);
+    background: linear-gradient(135deg, #4f8cff, #6fa3ff);
     color: #000;
+    box-shadow: 0 4px 12px rgba(79, 140, 255, 0.35);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.97);
   }
 
   .btn-danger {
     background: #ff4f6a33;
     color: #ffb3c0;
+    box-shadow: 0 4px 12px rgba(255, 79, 106, 0.25);
+  }
+
+  .btn-danger:active {
+    transform: scale(0.97);
+  }
+
+  .btn:hover {
+    opacity: 0.9;
   }
 
   .form {
@@ -128,21 +144,22 @@
   .form-row {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .form-row label {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     margin-bottom: 4px;
   }
 
   .form-row input {
-    padding: 8px;
+    padding: 10px;
     border-radius: var(--radius);
     border: 1px solid #2a2d36;
     background: #111217;
     color: var(--text);
+    font-size: 16px; /* крупный текст */
   }
 
   .form-footer {
