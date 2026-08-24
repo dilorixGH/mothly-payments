@@ -106,3 +106,45 @@ body {
     border-radius: 8px;
     font-size: 14px;
 }
+
+.calendar-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar-window {
+    background: #111;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-day {
+    padding: 10px;
+    background: #222;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.calendar-day:hover {
+    background: #333;
+}
+
