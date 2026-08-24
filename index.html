@@ -1,817 +1,318 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Monthly Payments</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    :root {
-      --bg: #05060a;
-      --card: #11131a;
-      --accent: #4f8cff;
-      --accent-soft: rgba(79, 140, 255, 0.12);
-      --danger: #ff4f6a;
-      --text-main: #f5f7ff;
-      --text-muted: #8b90a3;
-      --border: #262938;
-      --radius-lg: 22px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
-    }
+<meta charset="UTF-8">
+<title>Monthly Payments</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-    }
+<style>
+  :root {
+    --bg: #0b0c10;
+    --card: #1a1c22;
+    --accent: #4f8cff;
+    --text: #f5f7ff;
+    --muted: #8b90a3;
+    --radius: 14px;
+  }
 
-    body {
-      background: radial-gradient(circle at top, #151827 0, #05060a 55%);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 24px 12px;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  }
 
-    .app {
-      width: 100%;
-      max-width: 390px; /* iPhone 13 Pro width */
-      min-height: 720px;
-      background: linear-gradient(180deg, #090b12 0, #05060a 100%);
-      border-radius: 32px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.75),
-        0 0 0 1px rgba(255, 255, 255, 0.02);
-      padding: 18px 18px 22px;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden; /* убираем прокрутку */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .app-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-    }
+  .app {
+    width: 100%;
+    max-width: 390px; /* iPhone 13 Pro */
+    height: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
 
-    .app-title-block {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+  }
 
-    .app-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
+  .summary {
+    background: var(--card);
+    padding: 14px;
+    border-radius: var(--radius);
+  }
 
-    .app-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
 
-    .summary-card {
-      background: radial-gradient(circle at top left, #1b2340 0, #11131a 55%);
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 14px 14px 12px;
-      margin-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  .list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    margin-top: 20px;
+    font-size: 14px;
+  }
 
-    .summary-label {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+  .item {
+    background: var(--card);
+    padding: 12px;
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
 
-    .summary-value-main {
-      font-size: 22px;
-      font-weight: 700;
-    }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+  }
 
-    .summary-value-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+  .item-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
 
-    .summary-chip-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+  .actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
 
-    .chip {
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      font-size: 11px;
-      color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
+  .btn {
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+  }
 
-    .chip-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 6px;
-      background: rgba(79, 140, 255, 0.16);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      color: #c9d6ff;
-    }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      margin-top: 4px;
-    }
+  .btn-danger {
+    background: #ff4f6a33;
+    color: #ffb3c0;
+  }
 
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-    }
+  .form {
+    background: var(--card);
+    padding: 14px;
+    border-radius: var(--radius);
+  }
 
-    .section-count {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
 
-    .subscriptions-list {
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 4px;
-      margin-bottom: 12px;
-    }
+  .form-row label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
 
-    .subscription-card {
-      background: var(--card);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      padding: 10px 10px 9px;
-      margin-bottom: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      cursor: pointer;
-      transition: transform 0.08s ease, box-shadow 0.08s ease,
-        border-color 0.08s ease, background 0.08s ease;
-    }
+  .form-row input {
+    padding: 8px;
+    border-radius: var(--radius);
+    border: 1px solid #2a2d36;
+    background: #111217;
+    color: var(--text);
+  }
 
-    .subscription-card:hover {
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
-      border-color: rgba(79, 140, 255, 0.45);
-    }
-
-    .subscription-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .subscription-name {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .subscription-price {
-      font-size: 14px;
-      font-weight: 600;
-      color: #c9d6ff;
-    }
-
-    .subscription-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .subscription-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-    }
-
-    .status-dot.active {
-      background: #4f8cff;
-    }
-
-    .status-dot.expired {
-      background: #ff4f6a;
-    }
-
-    .subscription-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .btn {
-      border: none;
-      outline: none;
-      cursor: pointer;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      padding: 7px 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
-      transition: background 0.08s ease, transform 0.08s ease,
-        box-shadow 0.08s ease;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #4f8cff 0, #7f9cff 100%);
-      color: #05060a;
-      font-weight: 600;
-    }
-
-    .btn-danger {
-      background: rgba(255, 79, 106, 0.12);
-      color: #ffb3c0;
-    }
-
-    .btn-ghost {
-      background: rgba(255, 255, 255, 0.03);
-      color: var(--text-muted);
-    }
-
-    .btn:active {
-      transform: scale(0.97);
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
-    }
-
-    .btn-icon {
-      font-size: 14px;
-    }
-
-    .form-card {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      padding: 12px 12px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .form-label {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .form-input {
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      padding: 7px 9px;
-      font-size: 13px;
-      color: var(--text-main);
-      outline: none;
-      transition: border-color 0.08s ease, box-shadow 0.08s ease,
-        background 0.08s ease;
-    }
-
-    .form-input:focus {
-      border-color: rgba(79, 140, 255, 0.8);
-      box-shadow: 0 0 0 1px rgba(79, 140, 255, 0.35);
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .form-input::placeholder {
-      color: #5c6275;
-    }
-
-    .form-row-inline {
-      display: flex;
-      gap: 8px;
-    }
-
-    .form-row-inline .form-row {
-      flex: 1;
-    }
-
-    .form-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 4px;
-      gap: 8px;
-    }
-
-    .form-footer-left {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .form-footer-right {
-      display: flex;
-      gap: 6px;
-    }
-
-    .empty-state {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: center;
-      padding: 16px 10px;
-    }
-
-    .bottom-bar {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .bottom-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .link {
-      color: #7f9cff;
-      text-decoration: none;
-    }
-
-    .link:hover {
-      text-decoration: underline;
-    }
-
-    /* Scrollbar minimal */
-    .subscriptions-list::-webkit-scrollbar {
-      width: 4px;
-    }
-    .subscriptions-list::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .subscriptions-list::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 999px;
-    }
-
-    @media (max-width: 420px) {
-      body {
-        padding: 12px 6px;
-      }
-      .app {
-        border-radius: 24px;
-      }
-    }
-  </style>
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+</style>
 </head>
+
 <body>
-  <div class="app" id="app">
-    <header class="app-header">
-      <div class="app-title-block">
-        <div class="app-title">Monthly Payments</div>
-        <div class="app-subtitle">Подписки и регулярные платежи в одном месте</div>
-      </div>
-    </header>
+<div class="app">
 
-    <section class="summary-card">
-      <div class="summary-row">
-        <div>
-          <div class="summary-label">Ежемесячно всего</div>
-          <div class="summary-value-main" id="summary-total">€0</div>
-        </div>
-        <div style="text-align:right;">
-          <div class="summary-label">Активных подписок</div>
-          <div class="summary-value-sub" id="summary-count">0</div>
-        </div>
-      </div>
-      <div class="summary-chip-row">
-        <div class="chip">
-          <div class="chip-icon">€</div>
-          <span id="summary-next">Нет ближайших платежей</span>
-        </div>
-        <div class="chip">
-          <div class="chip-icon">⏱</div>
-          <span>Локальное хранение (LocalStorage)</span>
-        </div>
-      </div>
-    </section>
+  <div class="title">Monthly Payments</div>
 
-    <section>
-      <div class="section-header">
-        <div class="section-title">Мои подписки</div>
-        <div class="section-count" id="section-count-label">0 элементов</div>
-      </div>
-      <div class="subscriptions-list" id="subscriptions-list">
-        <div class="empty-state" id="empty-state">
-          Пока нет подписок.<br />
-          Добавь первую в форме ниже.
-        </div>
-      </div>
-    </section>
-
-    <section class="form-card" id="form-card">
-      <div class="form-row">
-        <label class="form-label" for="sub-name">Название подписки</label>
-        <input
-          class="form-input"
-          id="sub-name"
-          type="text"
-          placeholder="Spotify, Netflix, iCloud..."
-        />
-      </div>
-
-      <div class="form-row-inline">
-        <div class="form-row">
-          <label class="form-label" for="sub-price">Цена / месяц (€)</label>
-          <input
-            class="form-input"
-            id="sub-price"
-            type="number"
-            step="0.01"
-            min="0"
-            placeholder="9.99"
-          />
-        </div>
-        <div class="form-row">
-          <label class="form-label" for="sub-paid-until">Оплачено до</label>
-          <input
-            class="form-input"
-            id="sub-paid-until"
-            type="date"
-          />
-        </div>
-      </div>
-
-      <div class="form-footer">
-        <div class="form-footer-left" id="form-status">
-          Режим: создание новой подписки
-        </div>
-        <div class="form-footer-right">
-          <button class="btn btn-ghost" id="btn-reset">Сброс</button>
-          <button class="btn btn-primary" id="btn-save">
-            <span class="btn-icon">＋</span>
-            <span id="btn-save-label">Добавить</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <footer class="bottom-bar">
-      <span>Хранится только в браузере</span>
-      <span class="bottom-dot"></span>
-      <span>Готово для GitHub Pages</span>
-    </footer>
+  <div class="summary">
+    <div class="summary-row">
+      <span>Ежемесячно:</span>
+      <span id="sum-total">€0</span>
+    </div>
+    <div class="summary-row" style="margin-top:6px;">
+      <span>Подписок:</span>
+      <span id="sum-count">0</span>
+    </div>
   </div>
 
-  <script>
-    // --- Вибрация ---
-    function hapticTap(pattern = [12]) {
-      if (navigator.vibrate) {
-        navigator.vibrate(pattern);
-      }
-    }
+  <div class="list" id="list">
+    <div class="empty" id="empty">Нет подписок</div>
+  </div>
 
-    // --- Модель данных ---
-    const STORAGE_KEY = "monthly-payments-subscriptions";
+  <div class="form">
+    <div class="form-row">
+      <label>Название</label>
+      <input id="name" placeholder="Netflix">
+    </div>
 
-    let subscriptions = [];
-    let editingId = null;
+    <div class="form-row">
+      <label>Цена (€)</label>
+      <input id="price" type="number" step="0.01">
+    </div>
 
-    const elList = document.getElementById("subscriptions-list");
-    const elEmpty = document.getElementById("empty-state");
-    const elSummaryTotal = document.getElementById("summary-total");
-    const elSummaryCount = document.getElementById("summary-count");
-    const elSummaryNext = document.getElementById("summary-next");
-    const elSectionCountLabel = document.getElementById("section-count-label");
-    const elFormStatus = document.getElementById("form-status");
-    const elBtnSave = document.getElementById("btn-save");
-    const elBtnSaveLabel = document.getElementById("btn-save-label");
-    const elBtnReset = document.getElementById("btn-reset");
+    <div class="form-row">
+      <label>Оплачено до</label>
+      <input id="date" type="date">
+    </div>
 
-    const elName = document.getElementById("sub-name");
-    const elPrice = document.getElementById("sub-price");
-    const elPaidUntil = document.getElementById("sub-paid-until");
+    <div class="form-footer">
+      <button class="btn" id="reset">Сброс</button>
+      <button class="btn btn-primary" id="save">Добавить</button>
+    </div>
+  </div>
 
-    // --- LocalStorage ---
-    function loadSubscriptions() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return [];
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) return [];
-        return parsed;
-      } catch (e) {
-        console.warn("Failed to load subscriptions", e);
-        return [];
-      }
-    }
+</div>
 
-    function saveSubscriptions() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(subscriptions));
-      } catch (e) {
-        console.warn("Failed to save subscriptions", e);
-      }
-    }
+<script>
+function vibrate(p=[10]) { if (navigator.vibrate) navigator.vibrate(p); }
 
-    // --- Рендер ---
-    function render() {
-      // Список
-      elList.innerHTML = "";
-      if (subscriptions.length === 0) {
-        elList.appendChild(elEmpty);
-        elEmpty.style.display = "block";
-      } else {
-        elEmpty.style.display = "none";
-        subscriptions
-          .slice()
-          .sort((a, b) => {
-            const da = a.paidUntil ? new Date(a.paidUntil).getTime() : 0;
-            const db = b.paidUntil ? new Date(b.paidUntil).getTime() : 0;
-            return da - db;
-          })
-          .forEach((sub) => {
-            const card = document.createElement("div");
-            card.className = "subscription-card";
-            card.dataset.id = sub.id;
+let subs = JSON.parse(localStorage.getItem("mp-data") || "[]");
+let editId = null;
 
-            const header = document.createElement("div");
-            header.className = "subscription-header";
+const list = document.getElementById("list");
+const empty = document.getElementById("empty");
+const sumTotal = document.getElementById("sum-total");
+const sumCount = document.getElementById("sum-count");
 
-            const name = document.createElement("div");
-            name.className = "subscription-name";
-            name.textContent = sub.name || "Без названия";
+const nameEl = document.getElementById("name");
+const priceEl = document.getElementById("price");
+const dateEl = document.getElementById("date");
+const saveBtn = document.getElementById("save");
+const resetBtn = document.getElementById("reset");
 
-            const price = document.createElement("div");
-            price.className = "subscription-price";
-            price.textContent =
-              sub.price != null && sub.price !== ""
-                ? `€${Number(sub.price).toFixed(2)}`
-                : "€0.00";
+function render() {
+  list.innerHTML = "";
+  if (subs.length === 0) {
+    list.appendChild(empty);
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    subs.forEach(s => {
+      const item = document.createElement("div");
+      item.className = "item";
 
-            header.appendChild(name);
-            header.appendChild(price);
+      item.innerHTML = `
+        <div class="item-header">
+          <span>${s.name}</span>
+          <span>€${Number(s.price).toFixed(2)}</span>
+        </div>
+        <div class="item-meta">
+          ${s.date ? "Оплачено до: " + s.date : "Дата не указана"}
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary">Изменить</button>
+          <button class="btn btn-danger">Удалить</button>
+        </div>
+      `;
 
-            const meta = document.createElement("div");
-            meta.className = "subscription-meta";
+      const [editBtn, delBtn] = item.querySelectorAll("button");
 
-            const status = document.createElement("div");
-            status.className = "subscription-status";
-
-            const dot = document.createElement("span");
-            dot.className = "status-dot";
-
-            const now = new Date();
-            const paidDate = sub.paidUntil ? new Date(sub.paidUntil) : null;
-            let statusText = "Без даты";
-
-            if (paidDate) {
-              if (paidDate >= startOfDay(now)) {
-                dot.classList.add("active");
-                statusText = `Активна до ${formatDate(paidDate)}`;
-              } else {
-                dot.classList.add("expired");
-                statusText = `Истекла ${formatDate(paidDate)}`;
-              }
-            } else {
-              dot.classList.add("expired");
-            }
-
-            const statusLabel = document.createElement("span");
-            statusLabel.textContent = statusText;
-
-            status.appendChild(dot);
-            status.appendChild(statusLabel);
-
-            const metaRight = document.createElement("div");
-            metaRight.textContent = sub.paidUntil
-              ? `Следующий чек: ${formatDate(paidDate)}`
-              : "Дата не указана";
-
-            meta.appendChild(status);
-            meta.appendChild(metaRight);
-
-            const actions = document.createElement("div");
-            actions.className = "subscription-actions";
-
-            const btnEdit = document.createElement("button");
-            btnEdit.className = "btn btn-ghost";
-            btnEdit.innerHTML = '<span class="btn-icon">✎</span><span>Изменить</span>';
-            btnEdit.addEventListener("click", (e) => {
-              e.stopPropagation();
-              hapticTap([10, 20, 10]);
-              startEdit(sub.id);
-            });
-
-            const btnDelete = document.createElement("button");
-            btnDelete.className = "btn btn-danger";
-            btnDelete.innerHTML =
-              '<span class="btn-icon">🗑</span><span>Удалить</span>';
-            btnDelete.addEventListener("click", (e) => {
-              e.stopPropagation();
-              hapticTap([20, 40, 20]);
-              deleteSubscription(sub.id);
-            });
-
-            actions.appendChild(btnEdit);
-            actions.appendChild(btnDelete);
-
-            card.appendChild(header);
-            card.appendChild(meta);
-            card.appendChild(actions);
-
-            card.addEventListener("click", () => {
-              hapticTap([8]);
-              startEdit(sub.id);
-            });
-
-            elList.appendChild(card);
-          });
-      }
-
-      // Summary
-      const total = subscriptions.reduce((sum, sub) => {
-        const price = Number(sub.price || 0);
-        if (Number.isNaN(price)) return sum;
-        return sum + price;
-      }, 0);
-
-      elSummaryTotal.textContent = `€${total.toFixed(2)}`;
-      elSummaryCount.textContent = subscriptions.length.toString();
-      elSectionCountLabel.textContent = `${subscriptions.length} элементов`;
-
-      // Ближайший платеж
-      const upcoming = subscriptions
-        .filter((sub) => sub.paidUntil)
-        .map((sub) => new Date(sub.paidUntil))
-        .filter((d) => d >= startOfDay(new Date()))
-        .sort((a, b) => a.getTime() - b.getTime())[0];
-
-      if (upcoming) {
-        elSummaryNext.textContent = `Ближайший платеж: ${formatDate(upcoming)}`;
-      } else if (subscriptions.length === 0) {
-        elSummaryNext.textContent = "Нет ближайших платежей";
-      } else {
-        elSummaryNext.textContent = "Нет активных дат, проверь подписки";
-      }
-    }
-
-    function formatDate(date) {
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      return `${day}.${month}.${year}`;
-    }
-
-    function startOfDay(date) {
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    }
-
-    // --- CRUD ---
-    function createSubscription(data) {
-      const id = Date.now().toString() + "-" + Math.random().toString(16).slice(2);
-      subscriptions.push({
-        id,
-        name: data.name || "",
-        price: data.price || 0,
-        paidUntil: data.paidUntil || null,
-      });
-      saveSubscriptions();
-      render();
-    }
-
-    function updateSubscription(id, data) {
-      const idx = subscriptions.findIndex((s) => s.id === id);
-      if (idx === -1) return;
-      subscriptions[idx] = {
-        ...subscriptions[idx],
-        name: data.name,
-        price: data.price,
-        paidUntil: data.paidUntil || null,
+      editBtn.onclick = () => {
+        vibrate();
+        editId = s.id;
+        nameEl.value = s.name;
+        priceEl.value = s.price;
+        dateEl.value = s.date;
+        saveBtn.textContent = "Сохранить";
       };
-      saveSubscriptions();
-      render();
-    }
 
-    function deleteSubscription(id) {
-      subscriptions = subscriptions.filter((s) => s.id !== id);
-      if (editingId === id) {
-        resetForm();
-      }
-      saveSubscriptions();
-      render();
-    }
+      delBtn.onclick = () => {
+        vibrate([20]);
+        subs = subs.filter(x => x.id !== s.id);
+        save();
+      };
 
-    // --- Форма ---
-    function resetForm() {
-      editingId = null;
-      elName.value = "";
-      elPrice.value = "";
-      elPaidUntil.value = "";
-      elFormStatus.textContent = "Режим: создание новой подписки";
-      elBtnSaveLabel.textContent = "Добавить";
-      hapticTap([6, 12]);
-    }
-
-    function startEdit(id) {
-      const sub = subscriptions.find((s) => s.id === id);
-      if (!sub) return;
-      editingId = id;
-      elName.value = sub.name || "";
-      elPrice.value = sub.price != null ? sub.price : "";
-      elPaidUntil.value = sub.paidUntil || "";
-      elFormStatus.textContent = "Режим: редактирование подписки";
-      elBtnSaveLabel.textContent = "Сохранить";
-    }
-
-    function handleSave() {
-      const name = elName.value.trim();
-      const priceRaw = elPrice.value.trim();
-      const paidUntil = elPaidUntil.value || null;
-
-      if (!name && !priceRaw && !paidUntil) {
-        hapticTap([40, 60, 40]);
-        alert("Заполни хотя бы одно поле: название, цену или дату.");
-        return;
-      }
-
-      const price = priceRaw ? Number(priceRaw) : 0;
-      if (priceRaw && Number.isNaN(price)) {
-        hapticTap([40, 60, 40]);
-        alert("Цена должна быть числом.");
-        return;
-      }
-
-      const data = { name, price, paidUntil };
-
-      if (editingId) {
-        updateSubscription(editingId, data);
-        hapticTap([10, 20, 10]);
-      } else {
-        createSubscription(data);
-        hapticTap([12, 24, 12]);
-      }
-
-      resetForm();
-    }
-
-    // --- События ---
-    elBtnSave.addEventListener("click", (e) => {
-      e.preventDefault();
-      handleSave();
+      list.appendChild(item);
     });
+  }
 
-    elBtnReset.addEventListener("click", (e) => {
-      e.preventDefault();
-      resetForm();
+  const total = subs.reduce((a, b) => a + Number(b.price || 0), 0);
+  sumTotal.textContent = "€" + total.toFixed(2);
+  sumCount.textContent = subs.length;
+}
+
+function save() {
+  localStorage.setItem("mp-data", JSON.stringify(subs));
+  render();
+}
+
+saveBtn.onclick = () => {
+  vibrate();
+
+  const name = nameEl.value.trim();
+  const price = Number(priceEl.value || 0);
+  const date = dateEl.value || null;
+
+  if (!name) return alert("Введите название");
+
+  if (editId) {
+    const s = subs.find(x => x.id === editId);
+    s.name = name;
+    s.price = price;
+    s.date = date;
+    editId = null;
+    saveBtn.textContent = "Добавить";
+  } else {
+    subs.push({
+      id: Date.now(),
+      name,
+      price,
+      date
     });
+  }
 
-    // Лёгкая вибрация на фокус полей
-    [elName, elPrice, elPaidUntil].forEach((input) => {
-      input.addEventListener("focus", () => hapticTap([4]));
-    });
+  nameEl.value = "";
+  priceEl.value = "";
+  dateEl.value = "";
 
-    // --- Инициализация ---
-    subscriptions = loadSubscriptions();
-    render();
-  </script>
+  save();
+};
+
+resetBtn.onclick = () => {
+  vibrate();
+  editId = null;
+  nameEl.value = "";
+  priceEl.value = "";
+  dateEl.value = "";
+  saveBtn.textContent = "Добавить";
+};
+
+render();
+</script>
+
 </body>
 </html>
