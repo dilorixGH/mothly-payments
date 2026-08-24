@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #000;
+    color: #fff;
+}
+
+.app {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.app-header {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.app-total {
+    background: #111;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.app-total-title {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.app-total-value {
+    font-size: 28px;
+    margin-top: 5px;
+}
+
+.app-form {
+    background: #111;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.app-form-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background: #000;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.app-form-btn {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.app-list-item {
+    background: #111;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-list-item-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-list-item-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.app-list-item-date {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.app-list-item-sum {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.app-list-item-delete {
+    background: #ff3b3b;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
