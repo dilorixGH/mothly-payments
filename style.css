@@ -121,27 +121,52 @@ body {
     padding: 20px;
     border-radius: 12px;
     width: 300px;
+    height: 270px; /* фиксируем высоту */
+    display: flex;
+    flex-direction: column;
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-size: 18px;
 }
 
+.calendar-header button {
+    border: none;
+    width: 21px;
+    height: 21px;
+    background-color: transparent;
+    font-weight: bold;
+    color: grey;
+    cursor: pointer;
+}
+
 .calendar-grid {
+    flex: 1;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr); /* фиксируем 6 строк */
     gap: 6px;
 }
 
+.empty-day {
+    visibility: hidden;
+}
+
 .calendar-day {
-    padding: 10px;
     background: #222;
     text-align: center;
     border-radius: 8px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+
+    /* фиксируем высоту ячейки */
+    height: 40px;
 }
 
 .calendar-day:hover {
