@@ -173,3 +173,103 @@ body {
     background: #333;
 }
 
+.warning-screen {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.warning-window {
+    background: #111;
+    padding: 20px;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 360px;
+    /* text-align: center; */
+}
+
+.warning-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.warning-text {
+    font-size: 16px;
+    opacity: 0.85;
+    line-height: 1.45;
+    margin-bottom: 20px;
+}
+
+.warning-btn {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Liquid Glass */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Slider */
+.nav-slider {
+    position: absolute;
+    bottom: 10px;
+    width: 60px;
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    transition: transform 0.25s ease;
+}
+
+/* Items */
+.nav-item {
+    color: #fff;
+    font-size: 16px;
+    opacity: 0.7;
+    cursor: pointer;
+    user-select: none;
+}
+
+.nav-item.active {
+    opacity: 1;
+    font-weight: bold;
+}
+
+/* Screens */
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.screen-header {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
