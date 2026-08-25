@@ -226,3 +226,48 @@ warningOk.onclick = () => {
     localStorage.setItem("visited", "1");
 };
 
+const screens = {
+    expenses: document.getElementById("screen-expenses"),
+    stats: document.getElementById("screen-stats"),
+    settings: document.getElementById("screen-settings")
+};
+
+const navItems = document.querySelectorAll(".nav-item");
+const slider = document.querySelector(".nav-slider");
+
+function activateScreen(name) {
+    Object.keys(screens).forEach(key => {
+        screens[key].classList.remove("active");
+    });
+
+    screens[name].classList.add("active");
+
+    navItems.forEach(item => item.classList.remove("active"));
+    document.querySelector(`[data-screen="${name}"]`).classList.add("active");
+
+    const index = Array.from(navItems).findIndex(i => i.dataset.screen === name);
+    slider.style.transform = `translateX(${index * 33.33}vw)`;
+}
+
+navItems.forEach(item => {
+    item.onclick = () => activateScreen(item.dataset.screen);
+});
+
+/* Drag slider */
+let dragging = false;
+
+slider.addEventListener("touchstart", () => dragging = true);
+slider.addEventListener("touchend", () => dragging = false);
+
+slider.addEventListener("touchmove", (e) => {
+    if (!dragging) return;
+
+    const x = e.touches[0].clientX;
+    const width = window.innerWidth;
+
+    const index = Math.floor(x / (width / 3));
+
+    if (index === 0) activateScreen("expenses");
+    if (index === 1) activateScreen("stats");
+    if (index === 2) activateScreen("settings");
+});
