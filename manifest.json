@@ -1,0 +1,17 @@
+{
+  "name": "Mouthly Payments",
+  "short_name": "Payments",
+  "description": "Учет ежемесячных трат",
+  "start_url": "./main.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "./app-logo.png",
+      "sizes": "640x640",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

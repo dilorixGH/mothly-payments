@@ -3,27 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учет трат</title>
+    <title>Mouthly Payments</title>
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="app-logo.png" type="image/png">
 </head>
 <body>
 
+<div id="loadingScreen" class="loading-screen" aria-label="Загрузка">
+    <img class="loading-logo" src="app-logo.png" alt="PayCheck">
+</div>
+
 <div class="app">
-    <div class="app-header">Ежемесячные траты</div>
+    <div class="app-header">
+        <div id="appHeader" data-i18n="appHeader">Ежемесячные траты</div>
+        <button id="settingsOpen" class="settings-open-btn" type="button" aria-label="Настройки" data-i18n-aria-label="settingsTitle">
+            <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.0005 15C13.6573 15 15.0005 13.6569 15.0005 12C15.0005 10.3431 13.6573 9 12.0005 9C10.3436 9 9.00049 10.3431 9.00049 12C9.00049 13.6569 10.3436 15 12.0005 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.28957 19.3711L9.87402 20.6856C10.0478 21.0768 10.3313 21.4093 10.6902 21.6426C11.0492 21.8759 11.4681 22.0001 11.8962 22C12.3244 22.0001 12.7433 21.8759 13.1022 21.6426C13.4612 21.4093 13.7447 21.0768 13.9185 20.6856L14.5029 19.3711C14.711 18.9047 15.0609 18.5159 15.5029 18.26C15.9477 18.0034 16.4622 17.8941 16.9729 17.9478L18.4029 18.1C18.8286 18.145 19.2582 18.0656 19.6396 17.8713C20.021 17.6771 20.3379 17.3763 20.5518 17.0056C20.766 16.635 20.868 16.2103 20.8455 15.7829C20.823 15.3555 20.677 14.9438 20.4251 14.5978L19.5785 13.4344C19.277 13.0171 19.1159 12.5148 19.1185 12C19.1184 11.4866 19.281 10.9864 19.5829 10.5711L20.4296 9.40778C20.6814 9.06175 20.8275 8.65007 20.85 8.22267C20.8725 7.79528 20.7704 7.37054 20.5562 7C20.3423 6.62923 20.0255 6.32849 19.644 6.13423C19.2626 5.93997 18.833 5.86053 18.4074 5.90556L16.9774 6.05778C16.4667 6.11141 15.9521 6.00212 15.5074 5.74556C15.0645 5.48825 14.7144 5.09736 14.5074 4.62889L13.9185 3.31444C13.7447 2.92317 13.4612 2.59072 13.1022 2.3574C12.7433 2.12408 12.3244 1.99993 11.8962 2C11.4681 1.99993 11.0492 2.12408 10.6902 2.3574C10.3313 2.59072 10.0478 2.92317 9.87402 3.31444L9.28957 4.62889C9.0825 5.09736 8.73245 5.48825 8.28957 5.74556C7.84479 6.00212 7.33024 6.11141 6.81957 6.05778L5.38513 5.90556C4.95946 5.86053 4.52987 5.93997 4.14844 6.13423C3.76702 6.32849 3.45014 6.62923 3.23624 7C3.02206 7.37054 2.92002 7.79528 2.94251 8.22267C2.96499 8.65007 3.11103 9.06175 3.36291 9.40778L4.20957 10.5711C4.51151 10.9864 4.67411 11.4866 4.67402 12C4.67411 12.5134 4.51151 13.0137 4.20957 13.4289L3.36291 14.5922C3.11103 14.9382 2.96499 15.3499 2.94251 15.7773C2.92002 16.2047 3.02206 16.6295 3.23624 17C3.45036 17.3706 3.76727 17.6712 4.14864 17.8654C4.53001 18.0596 4.95949 18.1392 5.38513 18.0944L6.81513 17.9422C7.3258 17.8886 7.84034 17.9979 8.28513 18.2544C8.72966 18.511 9.08134 18.902 9.28957 19.3711Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
 
     <div class="app-total">
-        <div class="app-total-title">Общая сумма</div>
+        <div class="app-total-title" data-i18n="totalTitle">Общая сумма</div>
         <div class="app-total-value" id="totalValue">0 €</div>
     </div>
 
-    <div class="app-form">
-        <input class="app-form-input app-form-input-name" id="inputName" placeholder="Название траты">
-        <input class="app-form-input app-form-input-sum" id="inputSum" placeholder="Сумма (₽)" type="number" inputmode="numeric">
-        <input class="app-form-input app-form-input-date" id="inputDate" placeholder="Выбрать дату" readonly>
-        <button class="app-form-btn" id="btnAdd">Добавить / Изменить</button>
+    <div id="app-form" class="app-form">
+
+        <div class="app-form-add-block">
+            <div class="app-form-add-block-title" id="app-form-add-block-title" data-i18n="addTitle">Добавление</div>
+            <div id="app-form-add-block-more-btn" class="app-form-add-block-more-btn">
+                <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </div>
+
+        <input class="app-form-input app-form-input-name" id="inputName" data-i18n-placeholder="namePlaceholder" placeholder="Название траты">
+        <input class="app-form-input app-form-input-sum" id="inputSum" data-i18n-placeholder="sumPlaceholder" placeholder="Сумма" type="number" inputmode="numeric">
+        <input class="app-form-input app-form-input-date" id="inputDate" data-i18n-placeholder="datePlaceholder" placeholder="Оплачено до" readonly>
+        <div class="app-form-actions">
+            <button class="app-form-btn" id="btnAdd" data-i18n="addButton">Добавить</button>
+            <button class="app-form-cancel-btn" id="btnCancel" type="button" data-i18n="cancelButton">Отмена</button>
+        </div>
     </div>
 
     <div class="app-list" id="list"></div>
+</div>
+
+<div id="deleteModal" class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="delete-window">
+        <div class="delete-modal-title" id="deleteModalTitle" data-i18n="deleteTitle">Удалить трату?</div>
+        <div class="delete-modal-name" id="deleteModalName"></div>
+        <div class="delete-modal-actions">
+            <button id="deleteCancel" class="delete-cancel-btn" data-i18n="cancelButton">Отмена</button>
+            <button id="deleteConfirm" class="delete-confirm-btn" data-i18n="deleteButton">Удалить</button>
+        </div>
+    </div>
 </div>
 
 <div id="calendarModal" class="calendar-modal">
@@ -39,17 +76,44 @@
 
 <div id="warningScreen" class="warning-screen">
     <div class="warning-window">
-        <div class="warning-title">
-            <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.9998 8.99999V13M11.9998 17H12.0098M10.6151 3.89171L2.39019 18.0983C1.93398 18.8863 1.70588 19.2803 1.73959 19.6037C1.769 19.8857 1.91677 20.142 2.14613 20.3088C2.40908 20.5 2.86435 20.5 3.77487 20.5H20.2246C21.1352 20.5 21.5904 20.5 21.8534 20.3088C22.0827 20.142 22.2305 19.8857 22.2599 19.6037C22.2936 19.2803 22.0655 18.8863 21.6093 18.0983L13.3844 3.89171C12.9299 3.10654 12.7026 2.71396 12.4061 2.58211C12.1474 2.4671 11.8521 2.4671 11.5935 2.58211C11.2969 2.71396 11.0696 3.10655 10.6151 3.89171Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="warning-content">
+            <div class="warning-title">
+                <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.9998 8.99999V13M11.9998 17H12.0098M10.6151 3.89171L2.39019 18.0983C1.93398 18.8863 1.70588 19.2803 1.73959 19.6037C2.40908 20.142 2.86435 20.5 3.77487 20.5H20.2246C21.1352 20.5 21.5904 20.5 21.8534 20.3088C22.0829 20.142 22.2305 19.8857 22.2599 19.6037C22.2936 19.2803 22.0655 18.8863 21.6093 18.0983L13.3844 3.89171C12.9299 3.10654 12.7021 2.71396 12.4061 2.58211C12.1474 2.4671 11.8521 2.4671 11.5935 2.58211C11.2969 2.71396 11.0696 3.10655 10.6151 3.89171Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="warning-text">
+                <span data-i18n="warningText">Все данные сохраняются только на вашем устройстве. Если вы очистите данные браузера - все ваши записи исчезнут.</span>
+            </div>
         </div>
-        <div class="warning-text">
-            Этот сайт не использует аккаунты.  
-            Все данные сохраняются только на вашем устройстве.  
-            Если вы очистите данные браузера - все ваши записи исчезнут.
-            <br><br>
-            <i>Если вы видите это окно снова, значит данные были сброшены.</i>
-        </div>
-        <button id="warningOk" class="warning-btn">Понятно</button>
+        <button id="warningOk" class="warning-btn" data-i18n="warningButton">Понятно</button>
+    </div>
+</div>
+
+<div id="settingsScreen" class="settings-screen">
+    <div class="settings-window">
+        <div class="settings-title" data-i18n="settingsTitle">Настройки</div>
+        <label class="settings-label" for="currencySelect" data-i18n="currencyLabel">Валюта</label>
+        <select id="currencySelect" class="settings-select">
+            <option value="EUR" data-i18n="currencyEUR">Евро (€)</option>
+            <option value="USD" data-i18n="currencyUSD">Доллар ($)</option>
+            <option value="RUB" data-i18n="currencyRUB">Рубль (₽)</option>
+            <option value="UAH" data-i18n="currencyUAH">Гривна (₴)</option>
+        </select>
+        <label class="settings-label" for="languageSelect" data-i18n="languageLabel">Язык</label>
+        <select id="languageSelect" class="settings-select">
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+        </select>
+        <label class="settings-label" for="dateFormatSelect" data-i18n="dateFormatLabel">Формат даты</label>
+        <select id="dateFormatSelect" class="settings-select">
+            <option value="text" data-i18n="dateFormatText">15 сен 2025</option>
+            <option value="numeric" data-i18n="dateFormatNumeric">15.09.2025</option>
+        </select>
+        <label class="settings-label" for="themeSelect" data-i18n="themeLabel">Тема</label>
+        <select id="themeSelect" class="settings-select">
+            <option value="dark" data-i18n="darkTheme">Темная</option>
+            <option value="light" data-i18n="lightTheme">Светлая</option>
+        </select>
+        <button id="settingsConfirm" class="settings-btn" data-i18n="settingsButton">Сохранить</button>
     </div>
 </div>
 
